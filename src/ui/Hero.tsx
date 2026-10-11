@@ -306,14 +306,14 @@ export default function Hero() {
 
             </div>
 
-            {/* Left Column (RTL second): انیمیشن — ۵ ستون متصل به ستون ۱۲ در چپ (ستون‌های ۸ تا ۱۲) */}
+            {/* Left Column (RTL second): انیمیشن — ۵ ستون (ستون‌های ۸ تا ۱۲) با وسط‌چین کامل در فضای خود */}
             <div
-              className="lg:col-span-5 lg:col-start-8 scene-3d relative h-[500px] sm:h-[540px] lg:h-[560px] w-full flex items-center justify-center lg:justify-end order-1 lg:order-2"
+              className="lg:col-span-5 lg:col-start-8 scene-3d relative h-[500px] sm:h-[540px] lg:h-[560px] w-full flex items-center justify-center order-1 lg:order-2"
               style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
             >
-              {/* استیج سه‌بعدی متصل به لبه بیرونی چپ */}
+              {/* استیج سه‌بعدی متمرکز در فضای ۵ ستونه */}
               <div
-                className="relative w-[324px] h-full flex items-center justify-center pointer-events-auto"
+                className="relative w-[340px] h-full flex items-center justify-center pointer-events-auto"
                 style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
               >
 
