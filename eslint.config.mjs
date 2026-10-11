@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    ".claude/**",
+    "OpenWhip/**",
+    "parse-tokens.js",
+    "_landing-2-pattern/**",
   ]),
 ]);
 
