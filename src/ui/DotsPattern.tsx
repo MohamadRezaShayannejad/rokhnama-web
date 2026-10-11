@@ -1,21 +1,18 @@
 'use client';
 
 /**
- * پترن نقطه‌های هیرو مطابق مشخصات فیگما (Node 135:7) و پلن اجرایی:
- * - قرارگیری در قاب تعریف‌شده با خطوط کناری:
- *   - خطوط کناری در right-12 xl:right-24 و left-12 xl:left-24
- *   - پدینگ ۶۴ پیکسلی از خطوط کناری (px-16)
- *   - پدینگ ۶۴ پیکسلی از خط افقی هدر (pt-[144px] شامل ۸۰px هدر + ۶۴px پدینگ)
- *   - پدینگ ۶۴ پیکسلی از پایین (pb-16)
- * - استایل پترن: مستطیل‌های تیز ۴×۴ پیکسلی با فواصل ۶۴×۶۴ پیکسل و رنگ ملایم پرایمری بدون خطوط متقاطع شطرنجی
+ * پترن نقطه‌های هیرو:
+ * - قرارگیری در قاب تعریف‌شده با خطوط کناری (right-8 xl:right-12 و left-8 xl:left-12)
+ * - پدینگ داخلی از خطوط کناری و خط افقی هدر
+ * - مستطیل‌های تیز ۴×۴ پیکسلی با فواصل منظم ۶۴×۶۴ پیکسل
  */
 export default function DotsPattern() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-y-0 right-12 xl:right-24 left-12 xl:left-24 z-0 overflow-hidden"
+      className="pointer-events-none absolute inset-y-0 right-8 xl:right-12 left-8 xl:left-12 z-0 overflow-hidden"
     >
-      <div className="h-full w-full px-16 pt-[144px] pb-16">
+      <div className="h-full w-full px-8 lg:px-10 pt-[144px] pb-16">
         {/* کانتینر داخلی با پترن مستطیل‌های تیز ۴×۴ پیکسلی */}
         <div
           className="h-full w-full"

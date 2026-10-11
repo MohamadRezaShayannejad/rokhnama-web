@@ -174,11 +174,11 @@ export default function Hero() {
         {/* پترن مستطیل‌های تیز ۴ پیکسلی در کانتینر فلوید با پدینگ ۶۴px از قاب کناری (مطابق فیگما Node 135:7) */}
         <DotsPattern />
 
-        {/* 12-column grid: text spans cols 1-5 (right in RTL), scene spans cols 6-12 */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-14 xl:px-20 w-full grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-16 items-center z-10 pt-20 lg:pt-24">
+        {/* 12-column grid: text spans cols 1-6 (right in RTL), scene spans cols 7-12 */}
+        <div className="w-full mx-auto px-12 lg:px-16 xl:px-20 grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-16 items-center z-10 pt-20 lg:pt-24">
 
-          {/* Right Column (RTL first): copy — lg:col-span-5 */}
-          <div className="lg:col-span-5 lg:col-start-1 flex flex-col space-y-9 lg:space-y-11 order-2 lg:order-1 pr-2 lg:pr-6 xl:pr-10">
+          {/* Right Column (RTL first): copy — lg:col-span-6 */}
+          <div className="lg:col-span-6 lg:col-start-1 flex flex-col space-y-9 lg:space-y-11 order-2 lg:order-1 pr-0 lg:pr-3 xl:pr-5">
 
             {/* Badge: text-only, no background, sharp top border */}
             <div className="hero-fade-in self-start px-4 py-1 text-xs font-bold text-[var(--color-secondary-400)] tracking-widest uppercase rounded-none">
@@ -186,7 +186,7 @@ export default function Hero() {
             </div>
 
             {/* Headline: رُخ‌نما leads with a comma, heaviest weight; rest one level lighter */}
-            <h1 className="hero-fade-in text-3xl sm:text-4xl lg:text-6xl leading-[1.2] text-white tracking-tight">
+            <h1 className="hero-fade-in text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-[1.2] text-white tracking-tight">
               <span className="font-black">رُخ‌نما،</span>
               <br />
               <span className="font-extrabold">
@@ -195,7 +195,7 @@ export default function Hero() {
             </h1>
 
             {/* Body: 14px, shortened copy */}
-            <p className="hero-fade-in text-sm text-[var(--color-primary-100)] leading-loose font-medium max-w-lg">
+            <p className="hero-fade-in text-sm text-[var(--color-primary-100)] leading-loose font-medium max-w-xl">
               کاتالوگ شما را به تجربهٔ دیجیتال فروش تبدیل می‌کنیم: قیمت به‌روز، دسترسی نقش‌محور، باز شدن بدون اینترنت و داده‌ای از مسیر هر خریدار.
             </p>
 
@@ -305,9 +305,9 @@ export default function Hero() {
 
           </div>
 
-          {/* Left Column (RTL second): 3D scene — lg:col-span-7, starts at column 6 */}
+          {/* Left Column (RTL second): 3D scene — lg:col-span-6, starts at column 7 */}
           <div
-            className="lg:col-span-7 lg:col-start-6 scene-3d relative h-[520px] sm:h-[600px] lg:h-[680px] w-full flex items-center justify-center order-1 lg:order-2"
+            className="lg:col-span-6 lg:col-start-7 scene-3d relative h-[520px] sm:h-[600px] lg:h-[680px] w-full flex items-center justify-center order-1 lg:order-2"
             style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
           >
 

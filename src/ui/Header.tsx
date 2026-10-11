@@ -5,8 +5,8 @@ import { Button } from '@/ui/Button';
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-[var(--color-primary-600)]/90 backdrop-blur-md border-b border-white/10 transition-colors">
-      <div className="max-w-7xl mx-auto px-6 lg:px-14 xl:px-20 h-20 flex items-center justify-between">
+    <header className="fixed top-0 left-0 w-full z-40 bg-[var(--color-primary-600)]/90 backdrop-blur-md border-b border-white/10 transition-colors">
+      <div className="w-full mx-auto px-12 lg:px-16 xl:px-20 h-20 flex items-center justify-between">
 
         {/* Official Logo from history/Figma */}
         <div className="flex items-center gap-3 group cursor-pointer">
