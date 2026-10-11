@@ -171,7 +171,7 @@ export default function Hero() {
       {/* Sticky viewport frame */}
       <div ref={stickyRef} className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
 
-        {/* پترن مستطیل‌های تیز ۴ پیکسلی در کانتینر ۱۴۷۲px با پدینگ ۴۸px (مطابق فیگما) */}
+        {/* پترن مستطیل‌های تیز ۴ پیکسلی در کانتینر فلوید با پدینگ ۶۴px از قاب کناری (مطابق فیگما Node 135:7) */}
         <DotsPattern />
 
         {/* 12-column grid: text spans cols 1-5 (right in RTL), scene spans cols 6-12 */}
