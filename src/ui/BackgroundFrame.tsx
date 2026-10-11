@@ -1,22 +1,23 @@
 'use client';
 
 /**
- * فریم پس‌زمینه سایت بر اساس مشخصات فیگما (Node 135:7):
- * - خطوط عمودی ممتد در دو طرف با فاصله ۹۶ پیکسل خارج از کانتینر گرید (عرض ۱۴۷۲ پیکسل)
- * - خط افقی زیر هدر (ارتفاع ۸۰ پیکسل) با رنگ پرایمری ۵۰۰
+ * فریم پس‌زمینه سایت (مدل ۱: قاب ثابت مرکزی با عرض مشخص - Fixed Max-Width Container):
+ * - کانتینر متمرکز مرکزی با عرض مشخص ۱۴۷۲ پیکسل (mx-auto)
+ * - خطوط عمودی ممتد روی لبه‌های کانتینر مرکزی با z-50 که از روی هدر عبور می‌کنند
+ * - خط افقی سرتاسری زیر هدر در ارتفاع ۸۰ پیکسل (top-20)
  */
 export default function BackgroundFrame() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-20 overflow-hidden" aria-hidden="true">
-      {/* خط افقی سرتاسری زیر هدر */}
-      <div className="absolute top-20 left-0 right-0 h-[1px] bg-[var(--color-primary-500)] opacity-70" />
+    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden="true">
+      {/* خط افقی سرتاسری زیر هدر در ارتفاع ۸۰ پیکسل */}
+      <div className="absolute top-20 left-0 right-0 h-[1px] bg-[var(--color-primary-500)]" />
 
-      {/* دو خط عمودی کناری در تمام طول صفحه با فاصله ۹۶px از کانتینر گرید ۱۲۸۰px (عرض کل ۱۴۷۲px) */}
-      <div className="relative mx-auto h-full w-full max-w-[1472px]">
+      {/* دو خط عمودی در لبه‌های کانتینر متمرکز مرکزی (مدل ۱) */}
+      <div className="relative mx-auto h-full w-[calc(100%-48px)] lg:w-[calc(100%-64px)] max-w-[1472px]">
         {/* خط عمودی راست */}
-        <div className="absolute top-0 bottom-0 right-0 w-[1px] bg-[var(--color-primary-500)] opacity-70" />
+        <div className="absolute inset-y-0 right-0 w-[1px] bg-[var(--color-primary-500)]" />
         {/* خط عمودی چپ */}
-        <div className="absolute top-0 bottom-0 left-0 w-[1px] bg-[var(--color-primary-500)] opacity-70" />
+        <div className="absolute inset-y-0 left-0 w-[1px] bg-[var(--color-primary-500)]" />
       </div>
     </div>
   );
