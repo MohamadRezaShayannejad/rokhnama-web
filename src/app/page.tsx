@@ -3,12 +3,16 @@
 import Header from '@/ui/Header';
 import Hero from '@/ui/Hero';
 import CustomCursor from '@/ui/CustomCursor';
+import BackgroundFrame from '@/ui/BackgroundFrame';
 
 export default function Home() {
   return (
-    <div className="bg-[var(--bg-neutral-base)] text-[var(--text-neutral-base)] font-sans min-h-screen" dir="rtl">
+    <div className="bg-[var(--bg-neutral-base)] text-[var(--text-neutral-base)] font-sans min-h-screen relative" dir="rtl">
       <CustomCursor />
       <Header />
+
+      {/* خطوط عمودی ممتد در سراسر صفحه و خط افقی زیر هدر بر اساس فیگما */}
+      <BackgroundFrame />
 
       <main className="flex flex-col relative z-10 w-full">
         <Hero />

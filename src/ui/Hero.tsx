@@ -171,14 +171,8 @@ export default function Hero() {
       {/* Sticky viewport frame */}
       <div ref={stickyRef} className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
 
-        {/* Subtle geometric grid background */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-20"
-          style={{
-            backgroundImage: 'linear-gradient(var(--color-primary-400) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary-400) 1px, transparent 1px)',
-            backgroundSize: '56px 56px'
-          }}
-        />
+        {/* پترن مستطیل‌های تیز ۴ پیکسلی در کانتینر ۱۴۷۲px با پدینگ ۴۸px (مطابق فیگما) */}
+        <DotsPattern />
 
         {/* 12-column grid: text spans cols 1-5 (right in RTL), scene spans cols 6-12 */}
         <div className="max-w-7xl mx-auto px-6 lg:px-14 xl:px-20 w-full grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-16 items-center z-10 pt-20 lg:pt-24">
