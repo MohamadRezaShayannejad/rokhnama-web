@@ -171,145 +171,146 @@ export default function Hero() {
       {/* Sticky viewport frame */}
       <div ref={stickyRef} className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
 
-        {/* پترن مستطیل‌های تیز ۴ پیکسلی در کانتینر فلوید با پدینگ ۶۴px از قاب کناری (مطابق فیگما Node 135:7) */}
+        {/* پترن شطرنجی نقطه‌ها در قاب ریل‌ها */}
         <DotsPattern />
 
-        {/* 12-column grid: text spans cols 1-6 (right in RTL), scene spans cols 7-12 */}
-        <div className="w-full mx-auto px-12 lg:px-16 xl:px-20 grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-16 items-center z-10 pt-20 lg:pt-24">
+        {/* کانتینر محتوای هیرو: ۵۶ پیکسل (px-14) داخل‌تر از مرز قاب شطرنجی با مارجین ۱.۵ برابری */}
+        <div className="absolute inset-y-0 right-24 xl:right-36 left-24 xl:left-36 flex items-center justify-center px-14 z-10 pt-20 lg:pt-24 pointer-events-none">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-12 items-center pointer-events-auto">
 
-          {/* Right Column (RTL first): copy — lg:col-span-6 */}
-          <div className="lg:col-span-6 lg:col-start-1 flex flex-col space-y-9 lg:space-y-11 order-2 lg:order-1 pr-0 lg:pr-3 xl:pr-5">
+            {/* Right Column (RTL first): محتوا — ۶ ستون (ستون‌های ۱ تا ۶) */}
+            <div className="lg:col-span-6 lg:col-start-1 flex flex-col space-y-9 lg:space-y-11 order-2 lg:order-1 pr-0 lg:pr-2 xl:pr-4">
 
-            {/* Badge: text-only, no background, sharp top border */}
-            <div className="hero-fade-in self-start px-4 py-1 text-xs font-bold text-[var(--color-secondary-400)] tracking-widest uppercase rounded-none">
-              رُخ‌نما — کاتالوگ تعاملی
-            </div>
+              {/* Badge: text-only, no background, sharp top border */}
+              <div className="hero-fade-in self-start px-4 py-1 text-xs font-bold text-[var(--color-secondary-400)] tracking-widest uppercase rounded-none">
+                رُخ‌نما — کاتالوگ تعاملی
+              </div>
 
-            {/* Headline: رُخ‌نما leads with a comma, heaviest weight; rest one level lighter */}
-            <h1 className="hero-fade-in text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-[1.2] text-white tracking-tight">
-              <span className="font-black">رُخ‌نما،</span>
-              <br />
-              <span className="font-extrabold">
-                تجربهٔ دیجیتال <span className="text-[var(--color-secondary-400)]">برای فروش</span>
-              </span>
-            </h1>
+              {/* Headline: رُخ‌نما leads with a comma, heaviest weight; rest one level lighter */}
+              <h1 className="hero-fade-in text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-[1.2] text-white tracking-tight">
+                <span className="font-black">رُخ‌نما،</span>
+                <br />
+                <span className="font-extrabold">
+                  تجربهٔ دیجیتال <span className="text-[var(--color-secondary-400)]">برای فروش</span>
+                </span>
+              </h1>
 
-            {/* Body: 14px, shortened copy */}
-            <p className="hero-fade-in text-sm text-[var(--color-primary-100)] leading-loose font-medium max-w-xl">
-              کاتالوگ شما را به تجربهٔ دیجیتال فروش تبدیل می‌کنیم: قیمت به‌روز، دسترسی نقش‌محور، باز شدن بدون اینترنت و داده‌ای از مسیر هر خریدار.
-            </p>
+              {/* Body: 14px, shortened copy */}
+              <p className="hero-fade-in text-sm text-[var(--color-primary-100)] leading-loose font-medium max-w-xl">
+                کاتالوگ شما را به تجربهٔ دیجیتال فروش تبدیل می‌کنیم: قیمت به‌روز، دسترسی نقش‌محور، باز شدن بدون اینترنت و داده‌ای از مسیر هر خریدار.
+              </p>
 
-            {/* CTA Buttons */}
-            <div className="hero-fade-in flex flex-col sm:flex-row gap-5 pt-3">
-              <Button color="secondary" variant="solid" size="lg" className="text-[var(--text-neutral-strong)]">
-                درخواست دمو
-                <IconArrowLeft size={20} stroke={2.5} />
-              </Button>
-              <Button color="white" variant="outline" size="lg" className="border-white/30 text-white hover:bg-white hover:text-[var(--color-primary-600)]">
-                مقایسه با کاتالوگ فیزیکی
-              </Button>
-            </div>
+              {/* CTA Buttons */}
+              <div className="hero-fade-in flex flex-col sm:flex-row gap-5 pt-3">
+                <Button color="secondary" variant="solid" size="lg" className="text-[var(--text-neutral-strong)]">
+                  درخواست دمو
+                  <IconArrowLeft size={20} stroke={2.5} />
+                </Button>
+                <Button color="white" variant="outline" size="lg" className="border-white/30 text-white hover:bg-white hover:text-[var(--color-primary-600)]">
+                  مقایسه با کاتالوگ فیزیکی
+                </Button>
+              </div>
 
-            {/* Client logos: Vector SVG, monochrome with infinite marquee motion */}
-            <div className="hero-fade-in pt-8 border-t border-[var(--color-primary-500)] mt-6">
-              <p className="text-[11px] font-bold text-[var(--color-primary-200)] mb-4">مورد اعتماد رهبران صنعت و دانشگاه‌ها:</p>
+              {/* Client logos: Vector SVG, monochrome with infinite marquee motion */}
+              <div className="hero-fade-in pt-8 border-t border-[var(--color-primary-500)] mt-6">
+                <p className="text-[11px] font-bold text-[var(--color-primary-200)] mb-4">مورد اعتماد رهبران صنعت و دانشگاه‌ها:</p>
 
-              <div className="overflow-hidden w-full relative py-1 mask-[linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
-                <div className="animate-marquee-scroll flex items-center gap-8">
+                <div className="overflow-hidden w-full relative py-1 mask-[linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+                  <div className="animate-marquee-scroll flex items-center gap-8">
 
-                  {/* Track items (Set 1) */}
-                  <div className="flex items-center gap-8 shrink-0 text-white/60">
+                    {/* Track items (Set 1) */}
+                    <div className="flex items-center gap-8 shrink-0 text-white/60">
 
-                    {/* همراه اول (مرکز تحقیق و نوآوری) */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
-                        <circle cx="9" cy="12" r="6" fillOpacity="0.4" />
-                        <circle cx="15" cy="12" r="6" fillOpacity="0.8" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">همراه اول (تحقیق و نوآوری)</span>
+                      {/* همراه اول (مرکز تحقیق و نوآوری) */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                          <circle cx="9" cy="12" r="6" fillOpacity="0.4" />
+                          <circle cx="15" cy="12" r="6" fillOpacity="0.8" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">همراه اول (تحقیق و نوآوری)</span>
+                      </div>
+
+                      {/* دانشگاه صنعتی خواجه‌نصیر */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                          <polygon points="12 2 15 8 21 9 17 14 18 20 12 17 6 20 7 14 3 9 9 8 12 2" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">دانشگاه صنعتی خواجه‌نصیر</span>
+                      </div>
+
+                      {/* دلبند سلامت */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                          <path d="M3 12h4l3 8 4-16 3 8h4" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">دلبند سلامت</span>
+                      </div>
+
+                      {/* بنکداری پانچو */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                          <rect x="3" y="3" width="7" height="7" />
+                          <rect x="14" y="3" width="7" height="7" />
+                          <rect x="14" y="14" width="7" height="7" />
+                          <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">بنکداری پانچو</span>
+                      </div>
+
                     </div>
 
-                    {/* دانشگاه صنعتی خواجه‌نصیر */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
-                        <polygon points="12 2 15 8 21 9 17 14 18 20 12 17 6 20 7 14 3 9 9 8 12 2" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">دانشگاه صنعتی خواجه‌نصیر</span>
-                    </div>
+                    {/* Track items (Set 2 - Duplicate for seamless loop) */}
+                    <div className="flex items-center gap-8 shrink-0 text-white/60">
 
-                    {/* دلبند سلامت */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
-                        <path d="M3 12h4l3 8 4-16 3 8h4" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">دلبند سلامت</span>
-                    </div>
+                      {/* همراه اول (مرکز تحقیق و نوآوری) */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                          <circle cx="9" cy="12" r="6" fillOpacity="0.4" />
+                          <circle cx="15" cy="12" r="6" fillOpacity="0.8" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">همراه اول (تحقیق و نوآوری)</span>
+                      </div>
 
-                    {/* بنکداری پانچو */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">بنکداری پانچو</span>
+                      {/* دانشگاه صنعتی خواجه‌نصیر */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                          <polygon points="12 2 15 8 21 9 17 14 18 20 12 17 6 20 7 14 3 9 9 8 12 2" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">دانشگاه صنعتی خواجه‌نصیر</span>
+                      </div>
+
+                      {/* دلبند سلامت */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                          <path d="M3 12h4l3 8 4-16 3 8h4" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">دلبند سلامت</span>
+                      </div>
+
+                      {/* بنکداری پانچو */}
+                      <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
+                          <rect x="3" y="3" width="7" height="7" />
+                          <rect x="14" y="3" width="7" height="7" />
+                          <rect x="14" y="14" width="7" height="7" />
+                          <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        <span className="text-xs font-bold tracking-tight">بنکداری پانچو</span>
+                      </div>
+
                     </div>
 
                   </div>
-
-                  {/* Track items (Set 2 - Duplicate for seamless loop) */}
-                  <div className="flex items-center gap-8 shrink-0 text-white/60">
-
-                    {/* همراه اول (مرکز تحقیق و نوآوری) */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
-                        <circle cx="9" cy="12" r="6" fillOpacity="0.4" />
-                        <circle cx="15" cy="12" r="6" fillOpacity="0.8" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">همراه اول (تحقیق و نوآوری)</span>
-                    </div>
-
-                    {/* دانشگاه صنعتی خواجه‌نصیر */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
-                        <polygon points="12 2 15 8 21 9 17 14 18 20 12 17 6 20 7 14 3 9 9 8 12 2" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">دانشگاه صنعتی خواجه‌نصیر</span>
-                    </div>
-
-                    {/* دلبند سلامت */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
-                        <path d="M3 12h4l3 8 4-16 3 8h4" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">دلبند سلامت</span>
-                    </div>
-
-                    {/* بنکداری پانچو */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 border border-white/15 bg-white/5 rounded-none hover:text-white hover:border-white/40 transition-colors">
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2" aria-hidden="true">
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
-                      </svg>
-                      <span className="text-xs font-bold tracking-tight">بنکداری پانچو</span>
-                    </div>
-
-                  </div>
-
                 </div>
               </div>
+
             </div>
 
-          </div>
-
-          {/* Left Column (RTL second): 3D scene — lg:col-span-6, starts at column 7 */}
-          <div
-            className="lg:col-span-6 lg:col-start-7 scene-3d relative h-[520px] sm:h-[600px] lg:h-[680px] w-full flex items-center justify-center order-1 lg:order-2"
-            style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
-          >
+            {/* Left Column (RTL second): انیمیشن — ۵ ستون متصل به ستون ۱۲ در چپ (ستون‌های ۸ تا ۱۲) */}
+            <div
+              className="lg:col-span-5 lg:col-start-8 scene-3d relative h-[500px] sm:h-[540px] lg:h-[560px] w-full flex items-center justify-center order-1 lg:order-2"
+              style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
+            >
 
             {/* 9 Catalogs (Papers) - With Zero-Blur Dark Primary Shadow, Laid down one by one on load */}
             <div
@@ -446,6 +447,7 @@ export default function Hero() {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
 }
