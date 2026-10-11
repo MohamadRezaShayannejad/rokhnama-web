@@ -174,8 +174,8 @@ export default function Hero() {
         {/* پترن شطرنجی نقطه‌ها در قاب ریل‌ها */}
         <DotsPattern />
 
-        {/* کانتینر محتوای هیرو (مدل ۱): متمرکز در کانتینر ۱۴۷۲px با پدینگ ۵۶px (px-14) از ریل‌ها */}
-        <div className="relative mx-auto h-full w-[calc(100%-48px)] lg:w-[calc(100%-64px)] max-w-[1472px] flex items-center justify-center px-14 z-10 pt-20 lg:pt-24 pointer-events-none">
+        {/* کانتینر محتوای هیرو (مدل ۱ با راهکار ۱): متمرکز در کانتینر ۱۴۷۲px با پدینگ دلباز ۹۶px (px-20 lg:px-24) از ریل‌ها */}
+        <div className="relative mx-auto h-full w-[calc(100%-48px)] lg:w-[calc(100%-64px)] max-w-[1472px] flex items-center justify-center px-20 lg:px-24 z-10 pt-20 lg:pt-24 pointer-events-none">
           <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-12 items-center pointer-events-auto">
 
             {/* Right Column (RTL first): محتوا — ۶ ستون (ستون‌های ۱ تا ۶) */}

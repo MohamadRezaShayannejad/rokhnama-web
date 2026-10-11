@@ -6,7 +6,7 @@ import { Button } from '@/ui/Button';
 export default function Header() {
   return (
     <header className="fixed top-0 left-0 w-full z-40 bg-[var(--color-primary-600)]/90 backdrop-blur-md border-b border-white/10 transition-colors">
-      <div className="w-[calc(100%-48px)] lg:w-[calc(100%-64px)] max-w-[1472px] mx-auto px-14 h-20 flex items-center justify-between">
+      <div className="w-[calc(100%-48px)] lg:w-[calc(100%-64px)] max-w-[1472px] mx-auto px-20 lg:px-24 h-20 flex items-center justify-between">
 
         {/* Official Logo from history/Figma */}
         <div className="flex items-center gap-3 group cursor-pointer">
