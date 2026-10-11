@@ -1,9 +1,9 @@
 'use client';
 
 /**
- * فریم پس‌زمینه سایت:
- * - دو خط عمودی ممتد در تمام طول صفحه که از روی هدر عبور می‌کنند (z-50 با pointer-events-none)
- * - موقعیت ریل‌های کناری با مارجین ۱.۵ برابری (۱۴۴px در دسکتاپ بزرگ): right-24 xl:right-36 و left-24 xl:left-36
+ * فریم پس‌زمینه سایت (مدل ۱: قاب ثابت مرکزی با عرض مشخص - Fixed Max-Width Container):
+ * - کانتینر متمرکز مرکزی با عرض مشخص ۱۴۷۲ پیکسل (mx-auto)
+ * - خطوط عمودی ممتد روی لبه‌های کانتینر مرکزی با z-50 که از روی هدر عبور می‌کنند
  * - خط افقی سرتاسری زیر هدر در ارتفاع ۸۰ پیکسل (top-20)
  */
 export default function BackgroundFrame() {
@@ -12,9 +12,13 @@ export default function BackgroundFrame() {
       {/* خط افقی سرتاسری زیر هدر در ارتفاع ۸۰ پیکسل */}
       <div className="absolute top-20 left-0 right-0 h-[1px] bg-[var(--color-primary-500)]" />
 
-      {/* دو خط عمودی ممتد در تمام طول صفحه - تا روی هدر با فاصله ۱۴۴px در xl (۱.۵ برابر ۹۶px) */}
-      <div className="absolute inset-y-0 right-24 xl:right-36 w-[1px] bg-[var(--color-primary-500)]" />
-      <div className="absolute inset-y-0 left-24 xl:left-36 w-[1px] bg-[var(--color-primary-500)]" />
+      {/* دو خط عمودی در لبه‌های کانتینر متمرکز مرکزی (مدل ۱) */}
+      <div className="relative mx-auto h-full w-[calc(100%-48px)] lg:w-[calc(100%-64px)] max-w-[1472px]">
+        {/* خط عمودی راست */}
+        <div className="absolute inset-y-0 right-0 w-[1px] bg-[var(--color-primary-500)]" />
+        {/* خط عمودی چپ */}
+        <div className="absolute inset-y-0 left-0 w-[1px] bg-[var(--color-primary-500)]" />
+      </div>
     </div>
   );
 }

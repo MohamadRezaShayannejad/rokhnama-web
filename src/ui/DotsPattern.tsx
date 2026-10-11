@@ -1,18 +1,18 @@
 'use client';
 
 /**
- * پترن نقطه‌های هیرو:
- * - قرارگیری در مرز ریل‌های کناری با مارجین ۱.۵ برابری (right-24 xl:right-36 و left-24 xl:left-36)
- * - رفع مشکل هاید شدن ستون راست: تایل با نقطه متمرکز (x=30 y=30) و چیدمان متقارن با backgroundPosition: center top
+ * پترن نقطه‌های هیرو (مدل ۱: قاب ثابت مرکزی):
+ * - قرارگیری دقیق داخل کانتینر مرکزی ۱۴۷۲ پیکسل (mx-auto)
+ * - تایل با نقطه متمرکز (x=30 y=30) و چیدمان متقارن با backgroundPosition: center top
  * - پدینگ از هدر: pt-[144px] (۸۰px هدر + ۶۴px فاصله)
  */
 export default function DotsPattern() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-y-0 right-24 xl:right-36 left-24 xl:left-36 z-0 overflow-hidden"
+      className="pointer-events-none absolute inset-0 z-0 flex justify-center overflow-hidden"
     >
-      <div className="h-full w-full pt-[144px] pb-16">
+      <div className="relative h-full w-[calc(100%-48px)] lg:w-[calc(100%-64px)] max-w-[1472px] pt-[144px] pb-16">
         {/* کانتینر داخلی با پترن مستطیل‌های تیز ۴×۴ پیکسلی متقارن */}
         <div
           className="h-full w-full"
