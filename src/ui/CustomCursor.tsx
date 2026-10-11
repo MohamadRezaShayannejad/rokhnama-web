@@ -1,16 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+
+const emptySubscribe = () => () => {};
 
 export default function CustomCursor() {
   const [dotPos, setDotPos] = useState({ x: -100, y: -100 });
   const [boxPos, setBoxPos] = useState({ x: -100, y: -100 });
   const [isHovered, setIsHovered] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
-    setMounted(true);
-
     let animationFrameId: number;
     let targetX = -100;
     let targetY = -100;

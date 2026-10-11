@@ -16,6 +16,7 @@ const eslintConfig = defineConfig([
     "OpenWhip/**",
     "parse-tokens.js",
     "_landing-2-pattern/**",
+    "3004/**",
   ]),
 ]);
 

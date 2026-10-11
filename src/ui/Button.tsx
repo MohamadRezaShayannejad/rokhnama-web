@@ -203,6 +203,7 @@ export interface ButtonProps
   asChild?: boolean
   loading?: boolean
   paperFold?: boolean
+  fullWidth?: boolean
   iconBefore?: React.ReactNode
   iconAfter?: React.ReactNode
 }
@@ -217,6 +218,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       asChild = false,
       loading = false,
       paperFold = true,
+      fullWidth = false,
       iconBefore,
       iconAfter,
       disabled = false,
@@ -274,6 +276,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ color, variant, size, className }),
+          fullWidth && "w-full",
           /* دکمه با گوشه کج: مثلث پایینی کلاً با clip-path بریده شده تا پس‌زمینه دیده شود و گوشه کج به نظر بیاید */
           isSolidFold && "[clip-path:polygon(0_0,100%_0,100%_calc(100%-10px),calc(100%-10px)_100%,0_100%)]",
           /* دکمه در حالت لودینگ استایل غیرفعال (opacity-50) نمی‌گیرد */
@@ -290,6 +293,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <span
           className={cn(
             "relative z-10 inline-flex items-center justify-center gap-2.5 transition-all duration-[450ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] leading-none",
+            fullWidth && "w-full justify-between",
             canLoad ? "translate-x-14 opacity-0 pointer-events-none" : "translate-x-0 opacity-100"
           )}
         >

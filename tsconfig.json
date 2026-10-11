@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "_landing-2-pattern"]
+  "exclude": ["node_modules", "_landing-2-pattern", "3004"]
 }
