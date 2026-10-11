@@ -308,9 +308,14 @@ export default function Hero() {
 
             {/* Left Column (RTL second): انیمیشن — ۵ ستون متصل به ستون ۱۲ در چپ (ستون‌های ۸ تا ۱۲) */}
             <div
-              className="lg:col-span-5 lg:col-start-8 scene-3d relative h-[500px] sm:h-[540px] lg:h-[560px] w-full flex items-center justify-center order-1 lg:order-2"
+              className="lg:col-span-5 lg:col-start-8 scene-3d relative h-[500px] sm:h-[540px] lg:h-[560px] w-full flex items-center justify-center lg:justify-end order-1 lg:order-2"
               style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
             >
+              {/* استیج سه‌بعدی متصل به لبه بیرونی چپ */}
+              <div
+                className="relative w-[324px] h-full flex items-center justify-center pointer-events-auto"
+                style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
+              >
 
             {/* 9 Catalogs (Papers) - With Zero-Blur Dark Primary Shadow, Laid down one by one on load */}
             <div
@@ -445,6 +450,7 @@ export default function Hero() {
             </div>
 
           </div>
+        </div>
         </div>
       </div>
     </div>
