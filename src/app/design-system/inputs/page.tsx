@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Input } from '../../../ui/Input';
 import { Label } from '../../../ui/Label';
+import { Select } from '../../../ui/Select';
+import { Textarea } from '../../../ui/Textarea';
 import { IconSearch, IconMail, IconUser, IconLock, IconAlertCircle, IconCircleCheck, IconEyeOff, IconInfoCircle } from '@tabler/icons-react';
 
 // کامپوننت کمکی برای نمایش متن راهنما و کاراکتر شمار
@@ -318,6 +320,66 @@ export default function InputShowcase() {
                 <FieldHelper 
                   message="در نوع Password به صورت پیش‌فرض راست‌چین است" 
                   icon={<IconInfoCircle className="size-4" />} 
+                />
+              </div>
+
+            </div>
+          </div>
+
+          {/* انتخابگر و متن بلند (Select / Textarea) */}
+          <div className="border bg-[var(--bg-neutral-base)] border-[var(--border-neutral-subtle)] overflow-hidden">
+            <div className="p-6 border-b border-[var(--border-neutral-subtle)] bg-[var(--bg-neutral-subtle)]/70">
+              <h2 className="text-xl font-black text-[var(--text-neutral-strong)]">انتخابگر و متن بلند (Select / Textarea)</h2>
+              <p className="text-xs mt-0.5 text-[var(--text-neutral-subtle)]" style={{ fontFamily: "'Digi Almas Bold', sans-serif" }}>همان ماتریس intent × inputSize، بههمراه گزینهٔ خالی، شمارندهٔ کاراکتر و برچسب اختیاری</p>
+            </div>
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 items-start">
+
+              <div className="flex flex-col w-full">
+                <Label htmlFor="pick-industry" required className="mb-2.5">حوزهٔ فعالیت</Label>
+                <Select
+                  id="pick-industry"
+                  defaultValue=""
+                  placeholder="یک گزینه را انتخاب کنید"
+                >
+                  <option value="finance">بانک، بیمه و پرداخت</option>
+                  <option value="retail">خردهفروشی و فروشگاه زنجیرهای</option>
+                </Select>
+                <FieldHelper
+                  message="گزینهٔ خالی با prop placeholder ساخته میشود"
+                  icon={<IconInfoCircle className="size-4" />}
+                />
+              </div>
+
+              <div className="flex flex-col w-full">
+                <Label htmlFor="pick-error" className="mb-2.5">انتخابگر در حالت خطا</Label>
+                <Select id="pick-error" intent="error" placeholder="یک گزینه را انتخاب کنید">
+                  <option value="finance">بانک، بیمه و پرداخت</option>
+                </Select>
+                <FieldHelper
+                  intent="error"
+                  message="یک گزینه را انتخاب کنید"
+                  icon={<IconAlertCircle className="size-4" />}
+                />
+              </div>
+
+              <div className="flex flex-col w-full">
+                <Label htmlFor="note-optional" optional className="mb-2.5">توضیحات</Label>
+                <Textarea
+                  id="note-optional"
+                  resize="vertical"
+                  maxLength={500}
+                  placeholder="اولویتها یا نکتهٔ خاصی هست؟"
+                />
+                <FieldHelper currentLength={0} maxLength={500} />
+              </div>
+
+              <div className="flex flex-col w-full">
+                <Label htmlFor="note-disabled" intent="subtle" className="mb-2.5">متن بلند غیرفعال</Label>
+                <Textarea id="note-disabled" disabled placeholder="این فیلد قفل شده است" />
+                <FieldHelper
+                  intent="subtle"
+                  message="دسترسی مسدود شده است"
+                  icon={<IconLock className="size-4" />}
                 />
               </div>
 

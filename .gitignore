@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# archived/superseded etudes — never commit (see CLAUDE.md)
+/trash/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

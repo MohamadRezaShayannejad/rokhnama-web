@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -78,7 +77,7 @@ const buttonVariants = cva(
       variant: {
         solid: "relative",
         outline: "border-2 bg-transparent relative before:absolute before:top-[var(--y,50%)] before:left-[var(--x,50%)] before:w-0 before:h-0 before:bg-[var(--fill-color)] before:-translate-x-1/2 before:-translate-y-1/2 before:transition-[width,height] before:duration-[650ms] before:[transition-timing-function:cubic-bezier(0.16,1,0.3,1)] hover:before:w-[320%] hover:before:h-[320%] before:-z-10",
-        text: "bg-transparent shadow-none underline underline-offset-[6px] decoration-[3.5px]",
+        text: "bg-transparent shadow-none relative",
       },
       size: {
         sm: "h-[44px] px-5 text-sm [&_svg]:size-4",
@@ -204,9 +203,23 @@ export interface ButtonProps
   loading?: boolean
   paperFold?: boolean
   fullWidth?: boolean
+  iconOnly?: boolean
+  cursorEffect?: boolean
   iconBefore?: React.ReactNode
   iconAfter?: React.ReactNode
 }
+
+const iconOnlySizeClasses = {
+  sm: "w-[44px] h-[44px] !p-0",
+  md: "w-[52px] h-[52px] !p-0",
+  lg: "w-[60px] h-[60px] !p-0",
+};
+
+const textUnderlineThickness = {
+  sm: "h-[1.25px]",
+  md: "h-[1.5px]",
+  lg: "h-[1.75px]",
+};
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -217,8 +230,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       asChild = false,
       loading = false,
-      paperFold = true,
+      paperFold,
       fullWidth = false,
+      iconOnly = false,
+      cursorEffect = true,
       iconBefore,
       iconAfter,
       disabled = false,
@@ -229,17 +244,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button"
+    const isFoldActive = paperFold !== undefined ? paperFold : (iconOnly ? false : true)
 
-    const innerRef = React.useRef<HTMLButtonElement>(null)
+    const innerRef = React.useRef<HTMLButtonElement | HTMLElement | null>(null)
 
     const mergedRef = React.useCallback(
-      (node: HTMLButtonElement) => {
+      (node: HTMLButtonElement | HTMLElement | null) => {
         innerRef.current = node
         if (typeof ref === "function") {
-          ref(node)
+          ref(node as HTMLButtonElement)
         } else if (ref) {
-          ref.current = node
+          (ref as React.MutableRefObject<HTMLButtonElement | HTMLElement | null>).current = node
         }
       },
       [ref]
@@ -269,31 +284,27 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // لودینگ روی دکمه‌های متنی (لینک) غیرفعال است
     const canLoad = Boolean(loading && variant !== "text")
-    const isSolidFold = Boolean(variant === "solid" && paperFold)
-    const isSolidPlain = Boolean(variant === "solid" && !paperFold)
+    const isSolidFold = Boolean(variant === "solid" && isFoldActive)
+    const isSolidPlain = Boolean(variant === "solid" && !isFoldActive)
 
-    return (
-      <Comp
-        className={cn(
-          buttonVariants({ color, variant, size, className }),
-          fullWidth && "w-full",
-          /* دکمه با گوشه کج: مثلث پایینی کلاً با clip-path بریده شده تا پس‌زمینه دیده شود و گوشه کج به نظر بیاید */
-          isSolidFold && "[clip-path:polygon(0_0,100%_0,100%_calc(100%-10px),calc(100%-10px)_100%,0_100%)]",
-          /* دکمه در حالت لودینگ استایل غیرفعال (opacity-50) نمی‌گیرد */
-          canLoad && "pointer-events-none cursor-wait"
-        )}
-        ref={mergedRef}
-        disabled={disabled}
-        aria-busy={canLoad}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        {...props}
-      >
+    const sharedClassName = cn(
+      buttonVariants({ color, variant, size, className }),
+      fullWidth && "w-full",
+      iconOnly && (iconOnlySizeClasses[size || "md"] || "w-[52px] h-[52px] !p-0"),
+      /* دکمه با گوشه کج: مثلث پایینی کلاً با clip-path بریده شده تا پس‌زمینه دیده شود و گوشه کج به نظر بیاید */
+      isSolidFold && "[clip-path:polygon(0_0,100%_0,100%_calc(100%-10px),calc(100%-10px)_100%,0_100%)]",
+      /* دکمه در حالت لودینگ استایل غیرفعال (opacity-50) نمی‌گیرد */
+      canLoad && "pointer-events-none cursor-wait"
+    )
+
+    const renderButtonContent = (contentText: React.ReactNode) => (
+      <>
         {/* محتوای متنی و آیکون دکمه: تراز نوری دقیق در مرکز هندسی کادر دکمه همراه با پدینگ بالای متن */}
         <span
           className={cn(
             "relative z-10 inline-flex items-center justify-center gap-2.5 transition-all duration-[450ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] leading-none",
             fullWidth && "w-full justify-between",
+            iconOnly && "gap-0",
             canLoad ? "translate-x-14 opacity-0 pointer-events-none" : "translate-x-0 opacity-100"
           )}
         >
@@ -302,9 +313,24 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               {iconBefore}
             </span>
           )}
-          {children && (
-            <span className="inline-flex items-center justify-center leading-none select-none pt-[2px]">
-              {children}
+          {contentText && (
+            <span
+              className={cn(
+                "inline-flex items-center justify-center leading-none select-none relative",
+                !iconOnly && "pt-[2px]"
+              )}
+            >
+              {contentText}
+              {/* خط زیرین حالت متنی: رندر صریح با تگ span به طول ۷۵٪ و ضخامت ظریف‌تر */}
+              {variant === "text" && (
+                <span
+                  className={cn(
+                    "absolute -bottom-[5px] right-0 w-3/4 bg-current pointer-events-none transition-colors duration-200",
+                    textUnderlineThickness[size || "md"] || "h-[1.5px]"
+                  )}
+                  aria-hidden="true"
+                />
+              )}
             </span>
           )}
           {iconAfter && (
@@ -353,7 +379,43 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             </span>
           </>
         )}
-      </Comp>
+      </>
+    )
+
+    if (asChild && React.isValidElement(children)) {
+      const child = children as React.ReactElement<
+        { className?: string; children?: React.ReactNode } & Record<string, unknown>
+      >
+      return React.cloneElement(
+        child,
+        {
+          className: cn(sharedClassName, child.props.className),
+          ref: mergedRef,
+          "aria-busy": canLoad,
+          "data-cursor-button": "true",
+          "data-cursor-effect": cursorEffect ? "true" : "false",
+          onMouseEnter: handleMouseEnter,
+          onMouseLeave: handleMouseLeave,
+          ...props,
+          children: renderButtonContent(child.props.children),
+        }
+      )
+    }
+
+    return (
+      <button
+        className={sharedClassName}
+        ref={mergedRef}
+        disabled={disabled}
+        aria-busy={canLoad}
+        data-cursor-button="true"
+        data-cursor-effect={cursorEffect ? "true" : "false"}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        {...props}
+      >
+        {renderButtonContent(children)}
+      </button>
     )
   }
 )

@@ -1,44 +1,56 @@
 'use client';
 
-import Header from '@/ui/Header';
 import Hero from '@/ui/Hero';
-import CustomCursor from '@/ui/CustomCursor';
+import FeaturesShowcase from '@/ui/FeaturesShowcase';
+import CompareSection from '@/ui/CompareSection';
+import MigrationProcess from '@/ui/MigrationProcess';
+import InfrastructureA from '@/ui/InfrastructureA';
+import ProjectsSection from '@/ui/ProjectsSection';
+import UserSegments from '@/ui/UserSegments';
+import PricingSection from '@/ui/PricingSection';
 import BackgroundFrame from '@/ui/BackgroundFrame';
+import BackingSection from '@/ui/BackingSection';
+import AboutSection from '@/ui/AboutSection';
+import Footer from '@/ui/Footer';
 
 export default function Home() {
   return (
     <div className="bg-[var(--bg-neutral-base)] text-[var(--text-neutral-base)] font-sans min-h-screen relative" dir="rtl">
-      <CustomCursor />
-      <Header />
-
-      {/* خطوط عمودی ممتد در سراسر صفحه و خط افقی زیر هدر بر اساس فیگما */}
+      {/* خطوط عمودی ممتد در سراسر صفحه بر اساس فیگما */}
       <BackgroundFrame />
 
       <main className="flex flex-col relative z-10 w-full">
         <Hero />
 
-        {/* سکشن‌های لنگری هدر (Sections & Anchors) */}
-        <section id="features" className="min-h-screen bg-[var(--bg-neutral-base)] border-t border-[var(--border-neutral-subtle)] flex items-center justify-center p-8">
-          <h2 className="text-3xl font-black text-[var(--text-neutral-subtle)]">ویژگی‌های تعاملی (#features)</h2>
-        </section>
+        {/* ویترین تعاملی محصول */}
+        <FeaturesShowcase />
 
-        <section id="compare" className="min-h-screen bg-[var(--bg-neutral-base)] border-t border-[var(--border-neutral-subtle)] flex items-center justify-center p-8">
-          <h2 className="text-3xl font-black text-[var(--text-neutral-subtle)]">مقایسه با کاتالوگ کاغذی و PDF (#compare)</h2>
-        </section>
+        {/* مقایسه با کاتالوگ کاغذی و PDF (ماتریس مهندسی ۴ ستونه) */}
+        <CompareSection />
 
-        <section id="scenarios" className="min-h-screen bg-[var(--bg-neutral-base)] border-t border-[var(--border-neutral-subtle)] flex items-center justify-center p-8">
-          <h2 className="text-3xl font-black text-[var(--text-neutral-subtle)]">کاربردها و سناریوها (#scenarios)</h2>
-        </section>
+        {/* کاتالوگ — مسیر مهاجرت و انتقال از کاتالوگ قدیمی به رُخ‌نما */}
+        <MigrationProcess />
 
-        <section id="pricing" className="min-h-screen bg-[var(--bg-neutral-base)] border-t border-[var(--border-neutral-subtle)] flex items-center justify-center p-8">
-          <h2 className="text-3xl font-black text-[var(--text-neutral-subtle)]">تعرفه‌ها و بسته‌ها (#pricing)</h2>
-        </section>
+        {/* زیرساخت بومی و امنیت داده‌ها */}
+        <InfrastructureA />
 
-        <section id="demo" className="min-h-screen bg-[var(--bg-neutral-base)] border-t border-[var(--border-neutral-subtle)] flex items-center justify-center p-8">
-          <h2 className="text-3xl font-black text-[var(--text-neutral-subtle)]">درخواست دمو (#demo)</h2>
-        </section>
+        {/* کاربردها و سناریوها: کاربر سگمنت‌ها (#scenarios) */}
+        <UserSegments />
+
+        {/* نمونه‌کارها (#projects) */}
+        <ProjectsSection />
+
+        {/* ماشین‌حساب چاپ و پلن‌های تعرفه (#pricing) */}
+        <PricingSection />
       </main>
 
+      {/* درباره ما — نسخهٔ متن، بالای سکشن اصلی */}
+      <AboutSection />
+
+      {/* درخواست دمو و ثبت سفارش (#demo) — بالای فوتر */}
+      <BackingSection />
+
+      <Footer />
     </div>
   );
 }

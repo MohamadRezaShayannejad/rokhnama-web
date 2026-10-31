@@ -10,6 +10,7 @@ const labelVariants = cva(
     variants: {
       intent: {
         default: "text-neutral-900",
+        base: "text-neutral-700",
         error: "text-error-700",
         success: "text-success-700",
         subtle: "text-neutral-500",
@@ -25,10 +26,11 @@ export interface LabelProps
   extends React.LabelHTMLAttributes<HTMLLabelElement>,
     VariantProps<typeof labelVariants> {
   required?: boolean;
+  optional?: boolean;
 }
 
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, intent, required, children, ...props }, ref) => (
+  ({ className, intent, required, optional, children, ...props }, ref) => (
     <label
       ref={ref}
       className={cn(labelVariants({ intent, className }))}
@@ -36,6 +38,9 @@ const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
     >
       {children}
       {required && <span className="text-error-500 ms-1">*</span>}
+      {optional && (
+        <span className="text-neutral-400 font-normal ms-1">(اختیاری)</span>
+      )}
     </label>
   )
 )

@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { useState, useRef } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -39,6 +41,10 @@ export interface InputProps
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   textAlign?: "left" | "right" | "start" | "end";
+  /** تبدیل خودکار ارقام لاتین به فارسی در نمایش و ورودی؛ برای فیلدهای URL/ایمیل خاموش شود */
+  persianDigits?: boolean;
+  /** نمایش آیکون شروع فقط در دسکتاپ و حفظ فضای بهینه در موبایل */
+  desktopIconOnly?: boolean;
 }
 
 const convertToPersianDigits = (value: string | number | readonly string[] | undefined) => {
@@ -50,8 +56,16 @@ const convertToPersianDigits = (value: string | number | readonly string[] | und
     .replace(/[٠-٩]/g, (w) => persianDigits[w.charCodeAt(0) - 1632]);
 };
 
+/* کلاس ایستا تا اسکنر Tailwind این لیترال‌ها را ببیند */
+const ALIGNMENT_CLASS = {
+  left: "text-left",
+  right: "text-right",
+  start: "text-start",
+  end: "text-end",
+} as const;
+
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, intent, inputSize, startIcon, endIcon, textAlign, disabled, type, value, defaultValue, onChange, onSelect, onFocus, onBlur, onScroll, ...props }, ref) => {
+  ({ className, intent, inputSize, startIcon, endIcon, textAlign, persianDigits = true, desktopIconOnly, disabled, type, value, defaultValue, onChange, onSelect, onFocus, onBlur, onScroll, ...props }, ref) => {
     
     // State for the fake custom caret
     const [selectionStart, setSelectionStart] = useState(0);
@@ -75,7 +89,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     let alignmentClass = ""
     if (textAlign) {
-      alignmentClass = `text-${textAlign}`
+      alignmentClass = ALIGNMENT_CLASS[textAlign]
     } else if (type === "password") {
       alignmentClass = "text-right"
     }
@@ -83,7 +97,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const target = e.target;
       const original = target.value;
-      const converted = convertToPersianDigits(original) as string;
+      const converted = persianDigits
+        ? (convertToPersianDigits(original) as string)
+        : original;
       
       if (original !== converted) {
         const selStart = target.selectionStart;
@@ -134,8 +150,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       onScroll?.(e);
     };
 
-    const displayValue = convertToPersianDigits(value) as string | number | readonly string[] | undefined;
-    const displayDefaultValue = convertToPersianDigits(defaultValue) as string | number | readonly string[] | undefined;
+    const displayValue = persianDigits
+      ? (convertToPersianDigits(value) as string | number | readonly string[] | undefined)
+      : value;
+    const displayDefaultValue = persianDigits
+      ? (convertToPersianDigits(defaultValue) as string | number | readonly string[] | undefined)
+      : defaultValue;
     
     // We must read the actual uncontrolled value if 'value' is undefined
     const actualDisplayValue = (displayValue !== undefined ? displayValue : (internalInputRef.current?.value || displayDefaultValue || ""));
@@ -143,9 +163,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const getStartPadding = () => {
       if (startIcon) {
-        if (inputSize === "sm") return "ps-10";
-        if (inputSize === "md") return "ps-12";
-        if (inputSize === "lg") return "ps-14";
+        if (desktopIconOnly) {
+          if (inputSize === "sm") return "ps-4 sm:ps-[36px]";
+          if (inputSize === "md") return "ps-4 sm:ps-[44px]";
+          if (inputSize === "lg") return "ps-5 sm:ps-[52px]";
+        }
+        if (inputSize === "sm") return "ps-[36px]";
+        if (inputSize === "md") return "ps-[44px]";
+        if (inputSize === "lg") return "ps-[52px]";
       }
       return inputSize === "lg" ? "ps-5" : "ps-4";
     };
@@ -162,7 +187,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const paddingClasses = cn(getStartPadding(), getEndPadding());
 
     const startIconPos = cn(
-      "absolute flex items-center justify-center text-neutral-500 pointer-events-none z-10",
+      "absolute items-center justify-center text-neutral-500 pointer-events-none z-10",
+      desktopIconOnly ? "hidden sm:flex" : "flex",
       inputSize === "sm" && "start-4",
       inputSize === "md" && "start-4",
       inputSize === "lg" && "start-5"

@@ -2,7 +2,20 @@
 
 import React, { useState } from 'react';
 import { Button } from '../../../ui/Button';
-import { IconArrowLeft, IconFileText, IconSend, IconDownload } from '@tabler/icons-react';
+import { IconButton } from '../../../ui/IconButton';
+import {
+  IconArrowLeft,
+  IconFileText,
+  IconSend,
+  IconDownload,
+  IconPhone,
+  IconSearch,
+  IconShare,
+  IconBell,
+  IconBookmark,
+  IconSettings,
+  IconCalendar,
+} from '@tabler/icons-react';
 
 /**
  * دکمه تعاملی برای شوکیس: با کلیک کاربر به آرامی و با وقار وارد حالت لودینگ می‌شود
@@ -26,6 +39,31 @@ function InteractiveShowcaseButton({
     <Button {...props} loading={loading || props.loading} onClick={handleClick}>
       {children}
     </Button>
+  );
+}
+
+/**
+ * دکمه آیکونی تعاملی برای تست لودینگ مکعب غلطان و هاور جهتی
+ */
+function InteractiveShowcaseIconButton({
+  children,
+  onClick,
+  ...props
+}: React.ComponentProps<typeof IconButton>) {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!props.disabled && !props.loading) {
+      setLoading(true);
+      setTimeout(() => setLoading(false), 2600);
+    }
+    onClick?.(e);
+  };
+
+  return (
+    <IconButton {...props} loading={loading || props.loading} onClick={handleClick}>
+      {children}
+    </IconButton>
   );
 }
 
@@ -66,7 +104,22 @@ export default function ButtonShowcase() {
       label: 'متنی / لینک (Text)',
       variant: 'text' as const,
       paperFold: false,
-      desc: 'خط زیرین متصل بدون لودینگ'
+      desc: 'خط زیرین ۷۵٪ عرض متن هم‌رنگ استیت هاور'
+    },
+  ];
+
+  const iconStyleRows = [
+    {
+      id: 'icon-outline',
+      label: 'آیکون‌باتن اوتلاین (IconButton Outline)',
+      variant: 'outline' as const,
+      desc: 'ضخامت بوردر و خطوط آیکون یکسان: 1.5px / 2.0px / 2.5px',
+    },
+    {
+      id: 'icon-solid',
+      label: 'آیکون‌باتن سالید (IconButton Solid)',
+      variant: 'solid' as const,
+      desc: 'مربعی بدون کاغذ با هاور جهتی از نقطه ورود ماوس',
     },
   ];
 
@@ -189,6 +242,111 @@ export default function ButtonShowcase() {
           </div>
         </div>
 
+        {/* بخش ویژه کامپوننت اختصاصی دکمه‌های مربعی آیکون (IconButton) */}
+        <div className="border border-[var(--border-neutral-base)] bg-[var(--bg-neutral-subtle)] p-6 space-y-5">
+          <div className="flex items-center justify-between border-b border-[var(--border-neutral-subtle)] pb-3">
+            <div>
+              <h2 className="text-lg font-black text-[var(--text-neutral-strong)]">
+                کامپوننت مستقل دکمه آیکونی (IconButton)
+              </h2>
+              <p className="text-xs text-[var(--text-neutral-subtle)] mt-1">
+                دکمه‌های کاملاً متقارن مربعی بدون حالت کاغذ — در حالت اوتلاین ضخامت بوردر و خطوط آیکون کاملاً یکسان است (SM: 44px کادر / آیکون 20px با ضخامت 1.5px | MD: 52px کادر / آیکون 24px با ضخامت 2.0px | LG: 60px کادر / آیکون 28px با ضخامت 2.5px)
+              </p>
+            </div>
+            <span className="text-xs font-mono text-[var(--color-primary-600)] font-bold">
+              {'<IconButton size="..." variant="..." />'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            {/* اوتلاین در سایزهای مختلف با تطابق دقیق ضخامت کادر و آیکون */}
+            <div className="p-5 bg-[var(--bg-neutral-base)] border border-[var(--border-neutral-subtle)] space-y-4">
+              <div className="border-b border-[var(--border-neutral-subtle)] pb-2 flex items-center justify-between">
+                <span className="text-xs font-bold text-[var(--text-neutral-strong)] block">
+                  اوتلاین (Outline) — تطابق ضخامت
+                </span>
+                <span className="text-[10px] font-mono text-[var(--color-primary-600)] font-bold">
+                  border === stroke
+                </span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="primary" variant="outline" size="sm" aria-label="اشتراک‌گذاری">
+                    <IconShare size={20} stroke={1.5} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">44px · 1.5px</span>
+                </div>
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="primary" variant="outline" size="md" aria-label="جستجو">
+                    <IconSearch size={24} stroke={2.0} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">52px · 2.0px</span>
+                </div>
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="primary" variant="outline" size="lg" aria-label="تماس">
+                    <IconPhone size={28} stroke={2.5} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">60px · 2.5px</span>
+                </div>
+              </div>
+            </div>
+
+            {/* سالید ساده در سایزهای مختلف */}
+            <div className="p-5 bg-[var(--bg-neutral-base)] border border-[var(--border-neutral-subtle)] space-y-4">
+              <span className="text-xs font-bold text-[var(--text-neutral-strong)] block border-b border-[var(--border-neutral-subtle)] pb-2">
+                سالید پرایمری و سکندری (Solid)
+              </span>
+              <div className="flex items-center gap-4">
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="primary" variant="solid" size="sm" aria-label="اشتراک‌گذاری">
+                    <IconShare size={20} stroke={1.5} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">44px (SM)</span>
+                </div>
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="secondary" variant="solid" size="md" aria-label="جستجو">
+                    <IconSearch size={24} stroke={2.0} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">52px (MD)</span>
+                </div>
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="primary" variant="solid" size="lg" aria-label="تماس">
+                    <IconPhone size={28} stroke={2.5} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">60px (LG)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* حالت تیره برای هدر و سکشن‌های سرمه‌ای */}
+            <div className="p-5 bg-[var(--color-primary-900)] border border-[var(--color-primary-800)] text-white space-y-4">
+              <span className="text-xs font-bold text-white block border-b border-white/10 pb-2">
+                حالت روی زمینه تیره (هدر / زیرساخت)
+              </span>
+              <div className="flex items-center gap-4">
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="white" variant="outline" size="sm" aria-label="اشتراک‌گذاری">
+                    <IconShare size={20} stroke={1.5} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-white/60 font-mono block">سفید 44px</span>
+                </div>
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="white" variant="solid" size="md" aria-label="جستجو">
+                    <IconSearch size={24} stroke={2.0} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-white/60 font-mono block">سفید 52px</span>
+                </div>
+                <div className="text-center space-y-1">
+                  <InteractiveShowcaseIconButton color="white" variant="outline" size="lg" aria-label="تماس">
+                    <IconPhone size={28} stroke={2.5} />
+                  </InteractiveShowcaseIconButton>
+                  <span className="text-[10px] text-white/60 font-mono block">استفاده در هدر</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* ماتریس دکمه‌ها به تفکیک رنگ و استایل */}
         <div className="space-y-16">
           {colors.map((color) => {
@@ -289,6 +447,83 @@ export default function ButtonShowcase() {
                         >
                           تکمیل ظرفیت
                         </Button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* ردیف‌های اختصاصی IconButton برای هر پالت رنگی با تطابق ضخامت بوردر و آیکون */}
+                  {iconStyleRows.map((iRow) => (
+                    <div
+                      key={iRow.id}
+                      className={`p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center ${isDarkContainer ? 'divide-neutral-800' : ''}`}
+                    >
+                      {/* ستون متاداده استایل */}
+                      <div className="lg:col-span-3 space-y-1">
+                        <span className={`text-sm font-bold block ${isDarkContainer ? 'text-white' : 'text-[var(--text-neutral-strong)]'}`}>
+                          {iRow.label}
+                        </span>
+                        <span className={`text-xs font-mono block ${isDarkContainer ? 'text-neutral-400' : 'text-[var(--text-neutral-subtle)]'}`}>
+                          {iRow.desc}
+                        </span>
+                      </div>
+
+                      {/* ستون سایزها (SM: 44px / MD: 52px / LG: 60px) */}
+                      <div className="lg:col-span-5 flex flex-wrap items-center gap-4">
+                        <div className="text-center space-y-1">
+                          <InteractiveShowcaseIconButton
+                            color={color.id}
+                            variant={iRow.variant}
+                            size="sm"
+                            aria-label="علامت‌گذاری"
+                          >
+                            <IconBookmark size={20} stroke={1.5} />
+                          </InteractiveShowcaseIconButton>
+                          <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">SM · 44px</span>
+                        </div>
+                        <div className="text-center space-y-1">
+                          <InteractiveShowcaseIconButton
+                            color={color.id}
+                            variant={iRow.variant}
+                            size="md"
+                            aria-label="تنظیمات"
+                          >
+                            <IconSettings size={24} stroke={2.0} />
+                          </InteractiveShowcaseIconButton>
+                          <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">MD · 52px</span>
+                        </div>
+                        <div className="text-center space-y-1">
+                          <InteractiveShowcaseIconButton
+                            color={color.id}
+                            variant={iRow.variant}
+                            size="lg"
+                            aria-label="اعلان‌ها"
+                          >
+                            <IconBell size={28} stroke={2.5} />
+                          </InteractiveShowcaseIconButton>
+                          <span className="text-[10px] text-[var(--text-neutral-subtle)] font-mono block">LG · 60px</span>
+                        </div>
+                      </div>
+
+                      {/* ستون وضعیت‌های لودینگ دائم و غیرفعال */}
+                      <div className="lg:col-span-4 flex items-center justify-start lg:justify-end gap-3 flex-wrap">
+                        <IconButton
+                          color={color.id}
+                          variant={iRow.variant}
+                          size="md"
+                          loading
+                          aria-label="در حال بررسی"
+                        >
+                          <IconSettings size={24} stroke={2.0} />
+                        </IconButton>
+                        <IconButton
+                          color={color.id}
+                          variant={iRow.variant}
+                          size="md"
+                          disabled
+                          aria-label="غیرفعال"
+                        >
+                          <IconSettings size={24} stroke={2.0} />
+                        </IconButton>
                       </div>
                     </div>
                   ))}

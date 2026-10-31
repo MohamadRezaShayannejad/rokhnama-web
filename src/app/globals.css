@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
 @theme {
   --font-sans: var(--font-abar), ui-sans-serif, system-ui, sans-serif;
@@ -74,6 +75,13 @@
 
 
 @layer base {
+  /* اعمال لتر اسپیسینگ منفی ۲ درصد بر تمام متون در بریک‌پوینت موبایل */
+  @media (max-width: 639.98px) {
+    body {
+      letter-spacing: -0.02em;
+    }
+  }
+
   :root {
     --bg-neutral-base: var(--color-neutral-50);
     --bg-neutral-subtle: var(--color-neutral-100);
@@ -192,15 +200,52 @@
   animation-play-state: paused;
 }
 
-@media (min-width: 768px) {
-  *, *::before, *::after {
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor *,
+  html.has-custom-cursor *::before,
+  html.has-custom-cursor *::after {
     cursor: none !important;
   }
 }
 
 html {
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 64px;
   scroll-behavior: smooth;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 1280px) {
+  html {
+    scroll-padding-top: 88px;
+  }
+}
+
+body {
+  letter-spacing: -0.02em;
+}
+/* ستون محتوا: لبهٔ محتوا هرگز روی خط ریل نمینشیند.
+   زیر lg ریل ۲۴px از لبه است → پدینگ ۴۰؛ از lg ریل ۳۲px است → پدینگ ۴۸.
+   بالای سقف، max() پدینگ را رشد میدهد تا گرید روی ۱۲۱۶px (۱۲۸۰ منهای دو گاتر ۳۲) بنشیند
+   و از ۱۳۴۴px به بالا چیدمان دقیقاً همان قبل بماند. */
+@utility content-col {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 40px;
+  @media (min-width: 1024px) {
+    padding-inline: max(48px, calc((100% - 1216px) / 2));
+  }
+}
+
+.content-col {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 40px;
+}
+@media (min-width: 1024px) {
+  .content-col {
+    padding-inline: max(48px, calc((100% - 1216px) / 2));
+  }
 }
 
 /* انیمیشن هاور ناوبری هدر: خط سکندری از راست به چپ کشیده می‌شود (هم‌راستا با RTL) */
@@ -370,5 +415,163 @@ html {
   .nav-v4-text {
     transition: none;
   }
+}
+
+/* نمایش یک‌بارِ «به‌روزرسانی شد» در هیرو: هماهنگ با چرخهٔ تغییر قیمت */
+@keyframes price-tick-flash {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-price-tick {
+  animation: price-tick-flash 2.6s linear 1;
+}
+
+@keyframes flame-bob {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 2px 8px color-mix(in srgb, var(--color-secondary-500) 45%, transparent));
+  }
+  50% {
+    transform: translateY(2px);
+    filter: drop-shadow(0 3px 14px color-mix(in srgb, var(--color-secondary-600) 75%, transparent));
+  }
+}
+
+.animate-flame-bob {
+  animation: flame-bob 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-flame-bob {
+    animation: none;
+  }
+}
+
+/* اسلایدر مهندسی شارپ رُخ‌نما — صفر درجه گردی، حس کنترلر دقیق صنعتی */
+.rokhnama-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  position: relative;
+  z-index: 10;
+  display: block;
+  touch-action: pan-x;
+}
+
+.rokhnama-range-slider:focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 4px;
+}
+
+/* ریل پیش‌فرض نامرئی در کروم و سافاری تا لایهٔ کاستوم رندر شود */
+.rokhnama-range-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+/* ریل در فایرفاکس */
+.rokhnama-range-slider::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+/* دستگیره (Thumb) شارپ کروم و سافاری: ۲۲×۲۸ پیکسل، بدون گوشه‌گرد، شیاردار مهندسی */
+.rokhnama-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 30px;
+  background-color: #ffffff;
+  border: 2px solid var(--color-primary-700);
+  border-radius: 0 !important;
+  cursor: ew-resize;
+  margin-top: -11px;
+  box-shadow: 0 1px 4px rgba(31, 43, 143, 0.18);
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent,
+    transparent 2px,
+    var(--color-primary-500) 2px,
+    var(--color-primary-500) 3px,
+    transparent 3px,
+    transparent 5px
+  );
+  background-position: center;
+  background-size: 11px 14px;
+  background-repeat: no-repeat;
+  transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.rokhnama-range-slider:hover::-webkit-slider-thumb {
+  border-color: var(--color-primary-900);
+  background-color: var(--color-primary-50);
+  box-shadow: 0 2px 6px rgba(31, 43, 143, 0.28);
+}
+
+.rokhnama-range-slider:active::-webkit-slider-thumb {
+  border-color: var(--color-primary-950);
+  background-color: var(--color-primary-100);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+}
+
+/* دستگیره (Thumb) شارپ فایرفاکس */
+.rokhnama-range-slider::-moz-range-thumb {
+  width: 24px;
+  height: 30px;
+  background-color: #ffffff;
+  border: 2px solid var(--color-primary-700);
+  border-radius: 0 !important;
+  cursor: ew-resize;
+  box-shadow: 0 1px 4px rgba(31, 43, 143, 0.18);
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent,
+    transparent 2px,
+    var(--color-primary-500) 2px,
+    var(--color-primary-500) 3px,
+    transparent 3px,
+    transparent 5px
+  );
+  background-position: center;
+  background-size: 11px 14px;
+  background-repeat: no-repeat;
+  transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.rokhnama-range-slider:hover::-moz-range-thumb {
+  border-color: var(--color-primary-900);
+  background-color: var(--color-primary-50);
+  box-shadow: 0 2px 6px rgba(31, 43, 143, 0.28);
+}
+
+.rokhnama-range-slider:active::-moz-range-thumb {
+  border-color: var(--color-primary-950);
+  background-color: var(--color-primary-100);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 }
 

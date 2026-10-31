@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import CustomCursor from "@/ui/CustomCursor";
+import Header from "@/ui/Header";
+import SmoothScrollProvider from "@/ui/SmoothScrollProvider";
 
 const abar = localFont({
   src: [
@@ -45,9 +48,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" style={{ colorScheme: 'light' }} data-theme="light">
       <body className={`${abar.variable} ${abar.className} antialiased bg-[var(--bg-neutral-base)] text-[var(--text-neutral-base)]`}>
-        {children}
+        <SmoothScrollProvider>
+          <CustomCursor />
+          <Header />
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );
