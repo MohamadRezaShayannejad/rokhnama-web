@@ -207,6 +207,10 @@
   html.has-custom-cursor *::after {
     cursor: none !important;
   }
+  /* داخل iframe کاتالوگ، کرسر بومی مرورگر نمایش داده میشود */
+  html.has-custom-cursor iframe {
+    cursor: auto !important;
+  }
 }
 
 html {
@@ -575,3 +579,56 @@ body {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 }
 
+
+/* ------------------------------------------------------------------
+   تأیید درخواست دمو — لحظهٔ ثبت، همخانوادهٔ چارچوب مهندسی صفحه
+   پوسته در موبایل ریلبهریل مینشیند (۸px از هر لبه) و پدینگ داخلی
+   دقیقاً ۲۴px است تا خطکش نامرئی صفحه درون مودال هم ادامه پیدا کند.
+------------------------------------------------------------------ */
+.demo-modal-scrim {
+  animation: demoScrimIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.demo-modal-scrim[data-state="closing"] {
+  animation: demoScrimOut 170ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+.demo-sheet {
+  animation: demoSheetIn 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.demo-sheet[data-state="closing"] {
+  animation: demoSheetOut 170ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+/* تیک بهجای پاپشدن، با قلم کشیده میشود */
+.demo-success-check path {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 22;
+}
+.demo-sheet[data-state="open"] .demo-success-check path {
+  animation: demoCheckDraw 460ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+}
+@keyframes demoScrimIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes demoScrimOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes demoSheetIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes demoSheetOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(12px); }
+}
+@keyframes demoCheckDraw {
+  from { stroke-dashoffset: 22; }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-modal-scrim,
+  .demo-sheet { animation: none; }
+  .demo-sheet[data-state="closing"] { opacity: 0; }
+  .demo-success-check path { animation: none; stroke-dashoffset: 0; }
+}

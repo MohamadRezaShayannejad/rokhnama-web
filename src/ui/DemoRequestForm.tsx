@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   IconArrowLeft,
   IconBriefcase,
   IconBuilding,
-  IconCheck,
   IconLink,
   IconPhone,
   IconUser,
@@ -16,6 +15,7 @@ import { Label } from '@/ui/Label';
 import { Select } from '@/ui/Select';
 import { Textarea } from '@/ui/Textarea';
 import { submitDemoLead } from '@/app/actions/demo';
+import DemoSuccessModal from '@/ui/DemoSuccessModal';
 import {
   DEMO_FIELD_ORDER,
   DEMO_MESSAGES,
@@ -103,14 +103,7 @@ export default function DemoRequestForm() {
   const [errors, setErrors] = useState<DemoFormErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>('idle');
-  const focusNameAfterReset = useRef(false);
-
-  /* بازنشانی فرم، دکمهٔ قبلی را حذف می‌کند؛ فوکوس نباید روی بدنه بیفتد */
-  useEffect(() => {
-    if (!focusNameAfterReset.current) return;
-    focusNameAfterReset.current = false;
-    refs.current.name?.focus();
-  }, [status]);
+  const successOpen = status === 'sent';
 
   const bind =
     (key: DemoFieldKey) =>
@@ -165,6 +158,10 @@ export default function DemoRequestForm() {
 
       if (result.status === 'sent') {
         setStatus('sent');
+        /* فرم زیر مودال خالی میشود تا بستن مودال به فرم تازه برسد، نه پاسخ تکراری */
+        setValues(emptyDemoForm());
+        setErrors({});
+        setFormError(null);
         return;
       }
 
@@ -188,220 +185,197 @@ export default function DemoRequestForm() {
     }
   }
 
-  function resetForm() {
-    setValues(emptyDemoForm());
-    setErrors({});
-    setFormError(null);
+  function closeSuccess() {
     setStatus('idle');
-    focusNameAfterReset.current = true;
-  }
-
-  if (status === 'sent') {
-    return (
-      <div
-        role="alert"
-        aria-live="assertive"
-        className="flex flex-col items-center justify-center gap-4 sm:gap-5 border-2 border-[var(--color-success-600)] bg-white px-5 py-8 sm:px-8 sm:py-12 text-center"
-      >
-        <span className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center border-2 border-[var(--color-success-600)] bg-[var(--color-success-600)]/10 text-[var(--color-success-600)]">
-          <IconCheck size={28} stroke={2.2} className="sm:size-8" />
-        </span>
-        <h3 className="text-xl sm:text-2xl font-black tracking-[-0.02em] text-[var(--text-neutral-strong)]">
-          درخواست شما ثبت شد
-        </h3>
-        <p className="max-w-md text-sm sm:text-base leading-[1.7] text-[var(--text-neutral-subtle)]">
-          به‌زودی برای هماهنگی دمو با شما تماس می‌گیریم
-        </p>
-        <Button color="primary" variant="outline" size="md" onClick={resetForm}>
-          ثبت درخواست دیگر
-        </Button>
-      </div>
-    );
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-8 sm:gap-9">
-      <div className="grid grid-cols-1 gap-8 sm:gap-9 sm:grid-cols-2">
-        <DemoField
-          id="demo-name"
-          label="نام و نام خانوادگی"
-          required
-          error={errors.name}
-          renderControl={(a11y) => (
-            <Input
-              {...a11y}
-              ref={bind('name')}
-              inputSize="md"
-              intent={errors.name ? 'error' : 'default'}
-              placeholder="مثلاً علی رضایی"
-              autoComplete="name"
-              startIcon={<IconUser size={18} stroke={2.2} />}
-              desktopIconOnly
-              value={values.name}
-              onChange={handleChange('name')}
-              onBlur={handleBlur('name')}
-            />
-          )}
-        />
+    <>
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-8 sm:gap-9">
+        <div className="grid grid-cols-1 gap-8 sm:gap-9 sm:grid-cols-2">
+          <DemoField
+            id="demo-name"
+            label="نام و نام خانوادگی"
+            required
+            error={errors.name}
+            renderControl={(a11y) => (
+              <Input
+                {...a11y}
+                ref={bind('name')}
+                inputSize="md"
+                intent={errors.name ? 'error' : 'default'}
+                placeholder="مثلاً علی رضایی"
+                autoComplete="name"
+                startIcon={<IconUser size={18} stroke={2.2} />}
+                desktopIconOnly
+                value={values.name}
+                onChange={handleChange('name')}
+                onBlur={handleBlur('name')}
+              />
+            )}
+          />
 
-        <DemoField
-          id="demo-mobile"
-          label="شماره موبایل"
-          required
-          error={errors.mobile}
-          renderControl={(a11y) => (
-            <Input
-              {...a11y}
-              ref={bind('mobile')}
-              inputSize="md"
-              intent={errors.mobile ? 'error' : 'default'}
-              type="tel"
-              inputMode="tel"
-              dir="ltr"
-              textAlign="left"
-              placeholder="۰۹۱۲۳۴۵۶۷۸۹"
-              autoComplete="tel"
-              startIcon={<IconPhone size={18} stroke={2.2} />}
-              desktopIconOnly
-              value={values.mobile}
-              onChange={handleChange('mobile')}
-              onBlur={handleBlur('mobile')}
-            />
-          )}
-        />
+          <DemoField
+            id="demo-mobile"
+            label="شماره موبایل"
+            required
+            error={errors.mobile}
+            renderControl={(a11y) => (
+              <Input
+                {...a11y}
+                ref={bind('mobile')}
+                inputSize="md"
+                intent={errors.mobile ? 'error' : 'default'}
+                type="tel"
+                inputMode="tel"
+                dir="ltr"
+                textAlign="left"
+                placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+                autoComplete="tel"
+                startIcon={<IconPhone size={18} stroke={2.2} />}
+                desktopIconOnly
+                value={values.mobile}
+                onChange={handleChange('mobile')}
+                onBlur={handleBlur('mobile')}
+              />
+            )}
+          />
 
-        <DemoField
-          id="demo-company"
-          label="شرکت یا برند"
-          required
-          error={errors.company}
-          renderControl={(a11y) => (
-            <Input
-              {...a11y}
-              ref={bind('company')}
-              inputSize="md"
-              intent={errors.company ? 'error' : 'default'}
-              placeholder="مثلاً گروه صنعتی امید"
-              autoComplete="organization"
-              startIcon={<IconBuilding size={18} stroke={2.2} />}
-              desktopIconOnly
-              value={values.company}
-              onChange={handleChange('company')}
-              onBlur={handleBlur('company')}
-            />
-          )}
-        />
+          <DemoField
+            id="demo-company"
+            label="شرکت یا برند"
+            required
+            error={errors.company}
+            renderControl={(a11y) => (
+              <Input
+                {...a11y}
+                ref={bind('company')}
+                inputSize="md"
+                intent={errors.company ? 'error' : 'default'}
+                placeholder="مثلاً گروه صنعتی امید"
+                autoComplete="organization"
+                startIcon={<IconBuilding size={18} stroke={2.2} />}
+                desktopIconOnly
+                value={values.company}
+                onChange={handleChange('company')}
+                onBlur={handleBlur('company')}
+              />
+            )}
+          />
 
-        <DemoField
-          id="demo-industry"
-          label="حوزهٔ فعالیت"
-          required
-          error={errors.industry}
-          renderControl={(a11y) => (
-            <Select
-              {...a11y}
-              ref={bind('industry')}
-              inputSize="md"
-              intent={errors.industry ? 'error' : 'default'}
-              placeholder="حوزهٔ فعالیت شرکت را انتخاب کنید"
-              startIcon={<IconBriefcase size={18} stroke={2.2} />}
-              desktopIconOnly
-              value={values.industry}
-              onChange={handleChange('industry')}
-              onBlur={handleBlur('industry')}
+          <DemoField
+            id="demo-industry"
+            label="حوزهٔ فعالیت"
+            required
+            error={errors.industry}
+            renderControl={(a11y) => (
+              <Select
+                {...a11y}
+                ref={bind('industry')}
+                inputSize="md"
+                intent={errors.industry ? 'error' : 'default'}
+                placeholder="حوزهٔ فعالیت شرکت را انتخاب کنید"
+                startIcon={<IconBriefcase size={18} stroke={2.2} />}
+                desktopIconOnly
+                value={values.industry}
+                onChange={handleChange('industry')}
+                onBlur={handleBlur('industry')}
+              >
+                {INDUSTRIES.map((industry) => (
+                  <option key={industry} value={industry}>
+                    {industry}
+                  </option>
+                ))}
+              </Select>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 sm:gap-9">
+          <DemoField
+            id="demo-site"
+            label="آدرس سایت یا لینک کاتالوگ"
+            error={errors.site}
+            renderControl={(a11y) => (
+              <Input
+                {...a11y}
+                ref={bind('site')}
+                inputSize="md"
+                intent={errors.site ? 'error' : 'default'}
+                persianDigits={false}
+                type="url"
+                inputMode="url"
+                startIcon={<IconLink size={18} stroke={2.2} />}
+                desktopIconOnly
+                placeholder="آدرس سایت یا لینک کاتالوگ"
+                autoComplete="url"
+                value={values.site}
+                onChange={handleChange('site')}
+                onBlur={handleBlur('site')}
+              />
+            )}
+          />
+
+          <DemoField
+            id="demo-note"
+            label="توضیحات یا اولویت‌ها"
+            error={errors.note}
+            renderControl={(a11y) => (
+              <Textarea
+                {...a11y}
+                ref={bind('note')}
+                inputSize="md"
+                intent={errors.note ? 'error' : 'default'}
+                rows={3}
+                placeholder="نیازها، اولویت‌ها یا سناریوی فروش..."
+                value={values.note}
+                onChange={handleChange('note')}
+                onBlur={handleBlur('note')}
+              />
+            )}
+          />
+        </div>
+
+        <div className="pt-1">
+          {/* در موبایل: استایل سالید دسکتاپ با سایز مدیوم (یک پله کمتر) */}
+          <div className="sm:hidden">
+            <Button
+              color="primary"
+              variant="solid"
+              size="md"
+              type="submit"
+              fullWidth
+              disabled={status === 'sending'}
+              iconAfter={<IconArrowLeft size={18} stroke={2.2} />}
             >
-              {INDUSTRIES.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry}
-                </option>
-              ))}
-            </Select>
-          )}
-        />
-      </div>
+              {status === 'sending' ? 'در حال ارسال...' : 'درخواست دمو'}
+            </Button>
+          </div>
 
-      <div className="grid grid-cols-1 gap-8 sm:gap-9">
-        <DemoField
-          id="demo-site"
-          label="آدرس سایت یا لینک کاتالوگ"
-          error={errors.site}
-          renderControl={(a11y) => (
-            <Input
-              {...a11y}
-              ref={bind('site')}
-              inputSize="md"
-              intent={errors.site ? 'error' : 'default'}
-              persianDigits={false}
-              type="url"
-              inputMode="url"
-              startIcon={<IconLink size={18} stroke={2.2} />}
-              desktopIconOnly
-              placeholder="آدرس سایت یا لینک کاتالوگ"
-              autoComplete="url"
-              value={values.site}
-              onChange={handleChange('site')}
-              onBlur={handleBlur('site')}
-            />
-          )}
-        />
+          {/* در دسکتاپ و تبلت: دکمه سالید رسمی سایز بزرگ اولیه */}
+          <div className="hidden sm:block">
+            <Button
+              color="primary"
+              variant="solid"
+              size="lg"
+              type="submit"
+              fullWidth
+              disabled={status === 'sending'}
+              iconAfter={<IconArrowLeft size={22} stroke={2.2} />}
+            >
+              {status === 'sending' ? 'در حال ارسال...' : 'درخواست دمو'}
+            </Button>
+          </div>
 
-        <DemoField
-          id="demo-note"
-          label="توضیحات یا اولویت‌ها"
-          error={errors.note}
-          renderControl={(a11y) => (
-            <Textarea
-              {...a11y}
-              ref={bind('note')}
-              inputSize="md"
-              intent={errors.note ? 'error' : 'default'}
-              rows={3}
-              placeholder="نیازها، اولویت‌ها یا سناریوی فروش..."
-              value={values.note}
-              onChange={handleChange('note')}
-              onBlur={handleBlur('note')}
-            />
+          {formError && (
+            <p role="alert" className="mt-3 text-sm font-bold text-[var(--color-error-600)]">
+              {formError}
+            </p>
           )}
-        />
-      </div>
-
-      <div className="pt-1">
-        {/* در موبایل: استایل سالید دسکتاپ با سایز مدیوم (یک پله کمتر) */}
-        <div className="sm:hidden">
-          <Button
-            color="primary"
-            variant="solid"
-            size="md"
-            type="submit"
-            fullWidth
-            disabled={status === 'sending'}
-            iconAfter={<IconArrowLeft size={18} stroke={2.2} />}
-          >
-            {status === 'sending' ? 'در حال ارسال...' : 'درخواست دمو'}
-          </Button>
         </div>
+      </form>
 
-        {/* در دسکتاپ و تبلت: دکمه سالید رسمی سایز بزرگ اولیه */}
-        <div className="hidden sm:block">
-          <Button
-            color="primary"
-            variant="solid"
-            size="lg"
-            type="submit"
-            fullWidth
-            disabled={status === 'sending'}
-            iconAfter={<IconArrowLeft size={22} stroke={2.2} />}
-          >
-            {status === 'sending' ? 'در حال ارسال...' : 'درخواست دمو'}
-          </Button>
-        </div>
-
-        {formError && (
-          <p role="alert" className="mt-3 text-sm font-bold text-[var(--color-error-600)]">
-            {formError}
-          </p>
-        )}
-      </div>
-    </form>
+      <DemoSuccessModal open={successOpen} onClose={closeSuccess} />
+    </>
   );
 }

@@ -162,17 +162,36 @@ export default function CustomCursor() {
     };
 
     let isVisibleFlag = false;
+    let overIframeFlag = false;
+
+    const showCursor = () => {
+      if (isVisibleFlag) return;
+      isVisibleFlag = true;
+      setIsVisible(true);
+    };
+
+    const hideCursor = () => {
+      isVisibleFlag = false;
+      setIsVisible(false);
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
+      const el = e.target as HTMLElement | null;
+
+      /* روی iframe کاتالوگ، موقعیت واقعی موس به والد نمیرسد؛ اگر کرسر اینجا نشان داده شود
+         روی همان نقطه گیر میکند و روی کاتالوگ شناور میماند. تا خروج از iframe پنهان است. */
+      if (el?.tagName === 'IFRAME') {
+        overIframeFlag = true;
+        hideCursor();
+        return;
+      }
+
+      overIframeFlag = false;
       targetX = e.clientX;
       targetY = e.clientY;
 
-      if (!isVisibleFlag) {
-        isVisibleFlag = true;
-        setIsVisible(true);
-      }
+      showCursor();
 
-      const el = e.target as HTMLElement | null;
       if (el !== lastTargetRef.current) {
         lastTargetRef.current = el;
         const isPrimary = detectIsPrimaryBg(el);
@@ -182,6 +201,18 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const el = e.target as HTMLElement | null;
+
+      // داخل iframe رویدادهای موس به والد نمیرسند؛ کرسر سفارشی همانجا پنهان میشود
+      // تا هنگام خروج دوباره از روی mousemove ظاهر شود
+      if (el?.tagName === 'IFRAME') {
+        overIframeFlag = true;
+        hideCursor();
+        return;
+      }
+
+      overIframeFlag = false;
+      showCursor();
+
       const btn = findCursorFillTarget(el);
       const isBtn = Boolean(btn);
       const isLnk = !isBtn && Boolean(findGeneralLink(el));
@@ -289,7 +320,7 @@ export default function CustomCursor() {
     };
 
     const handleMouseLeave = () => {
-      setIsVisible(false);
+      hideCursor();
       if (tlRef.current) {
         tlRef.current.kill();
         isAnimatingClickRef.current = false;
@@ -297,7 +328,9 @@ export default function CustomCursor() {
     };
 
     const handleMouseEnter = () => {
-      setIsVisible(true);
+      // اگر ورود به پنجره مستقیم روی iframe کاتالوگ باشد، کرسر سفارشی نباید ظاهر شود
+      if (overIframeFlag) return;
+      showCursor();
     };
 
     const loop = () => {
