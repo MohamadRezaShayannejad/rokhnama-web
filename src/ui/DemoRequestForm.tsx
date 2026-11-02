@@ -15,7 +15,7 @@ import { Label } from '@/ui/Label';
 import { Select } from '@/ui/Select';
 import { Textarea } from '@/ui/Textarea';
 import { submitDemoLead } from '@/app/actions/demo';
-import DemoSuccessModal from '@/ui/DemoSuccessModal';
+import DemoFeedbackModal from '@/ui/DemoFeedbackModal';
 import {
   DEMO_FIELD_ORDER,
   DEMO_MESSAGES,
@@ -26,6 +26,7 @@ import {
   validateDemoForm,
   type DemoFieldKey,
   type DemoFormErrors,
+  type DemoFormValues,
 } from '@/lib/demo-form';
 
 /**
@@ -34,7 +35,7 @@ import {
  */
 
 type FieldElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-type Status = 'idle' | 'sending' | 'sent';
+type Status = 'idle' | 'sending' | 'sent' | 'failed';
 
 interface ControlA11y {
   id: string;
@@ -103,7 +104,6 @@ export default function DemoRequestForm() {
   const [errors, setErrors] = useState<DemoFormErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>('idle');
-  const successOpen = status === 'sent';
 
   const bind =
     (key: DemoFieldKey) =>
@@ -137,7 +137,37 @@ export default function DemoRequestForm() {
     }
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function send(next: DemoFormValues) {
+    setErrors({});
+    setFormError(null);
+    setStatus('sending');
+
+    try {
+      const result = await submitDemoLead(next);
+
+      if (result.status === 'sent') {
+        setStatus('sent');
+        /* فرم زیر مودال خالی میشود تا بستن مودال به فرم تازه برسد، نه پاسخ تکراری */
+        setValues(emptyDemoForm());
+        return;
+      }
+
+      if (result.status === 'invalid') {
+        setStatus('idle');
+        setErrors(result.errors);
+        setFormError(DEMO_MESSAGES.submitValidation);
+        focusFirstInvalid(result.errors);
+        return;
+      }
+
+      /* خطای ارسال در مودال نشان داده میشود؛ مقادیر فرم دستنخورده میمانند تا قابل تلاش دوباره باشد */
+      setStatus('failed');
+    } catch {
+      setStatus('failed');
+    }
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === 'sending') return;
 
@@ -149,44 +179,16 @@ export default function DemoRequestForm() {
       return;
     }
 
-    setErrors({});
-    setFormError(null);
-    setStatus('sending');
-
-    try {
-      const result = await submitDemoLead(values);
-
-      if (result.status === 'sent') {
-        setStatus('sent');
-        /* فرم زیر مودال خالی میشود تا بستن مودال به فرم تازه برسد، نه پاسخ تکراری */
-        setValues(emptyDemoForm());
-        setErrors({});
-        setFormError(null);
-        return;
-      }
-
-      setStatus('idle');
-
-      if (result.status === 'invalid') {
-        setErrors(result.errors);
-        setFormError(DEMO_MESSAGES.submitValidation);
-        focusFirstInvalid(result.errors);
-        return;
-      }
-
-      setFormError(
-        result.reason === 'server'
-          ? DEMO_MESSAGES.submitFallback
-          : DEMO_MESSAGES.submitNetwork
-      );
-    } catch {
-      setStatus('idle');
-      setFormError(DEMO_MESSAGES.submitNetwork);
-    }
+    void send(values);
   }
 
-  function closeSuccess() {
+  function closeFeedback() {
     setStatus('idle');
+  }
+
+  function retrySubmit() {
+    setStatus('idle');
+    void send(values);
   }
 
   return (
@@ -375,7 +377,25 @@ export default function DemoRequestForm() {
         </div>
       </form>
 
-      <DemoSuccessModal open={successOpen} onClose={closeSuccess} />
+      <DemoFeedbackModal
+        open={status === 'sent'}
+        tone="success"
+        title="درخواست شما ثبت شد"
+        description="تا ۴۸ ساعت تیم ما با شما تماس میگیرد و برای ساخت دمو هماهنگ میکنیم"
+        primaryLabel="متوجه شدم"
+        onPrimary={closeFeedback}
+        onClose={closeFeedback}
+      />
+
+      <DemoFeedbackModal
+        open={status === 'failed'}
+        tone="error"
+        title="مشکلی پیش آمد"
+        description={DEMO_MESSAGES.submitFallback}
+        primaryLabel="تلاش دوباره"
+        onPrimary={retrySubmit}
+        onClose={closeFeedback}
+      />
     </>
   );
 }

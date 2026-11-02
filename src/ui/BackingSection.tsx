@@ -24,7 +24,7 @@ const PROMISES: { title: string; desc: string; icon: Icon }[] = [
     icon: IconShieldCheck,
   },
   {
-    title: 'آماده سازی نمونه تا ۴۸ ساعت',
+    title: 'تماس و هماهنگی تا ۴۸ ساعت',
     desc: 'نمونهٔ تعاملی کاتالوگ شما پیش از جلسه آماده میشود',
     icon: IconClock24,
   },
@@ -181,10 +181,10 @@ export default function BackingSection() {
                   </span>
                 </h2>
                 <p className="sm:hidden text-sm leading-[1.7] text-[var(--text-neutral-base)] font-normal">
-                  اطلاعات خود را ثبت کنید؛ نمونهٔ تعاملی کاتالوگ شما تا ۴۸ ساعت آماده می‌شود.
+                  اطلاعات خود را ثبت کنید؛ تا ۴۸ ساعت تیم ما برای ساخت دمو با شما تماس می‌گیرد
                 </p>
                 <p className="hidden sm:block text-base leading-[1.7] text-[var(--text-neutral-base)] font-normal">
-                  لینک سایت یا کاتالوگ فعلی‌تان را بفرستید. تا ۴۸ ساعت، نمونه‌ای تعاملی از کاتالوگ شما آماده می‌کنیم تا محصول را با اطلاعات واقعی ببینید
+                  لینک سایت یا کاتالوگ فعلی‌تان را بفرستید. تا ۴۸ ساعت تیم ما برای ساخت نمونهٔ تعاملی کاتالوگ شما تماس می‌گیرد و هماهنگ می‌کند تا محصول را با اطلاعات واقعی ببینید
                 </p>
               </div>
 

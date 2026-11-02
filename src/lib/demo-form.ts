@@ -53,7 +53,6 @@ export const DEMO_MESSAGES = {
   urlTooLong: "لینک بیش از حد طولانی است",
   noteTooLong: "توضیحات نباید بیشتر از ۵۰۰ کاراکتر باشد",
   submitValidation: "اطلاعات مشخصشده را بررسی کنید",
-  submitNetwork: "ارسال درخواست انجام نشد، دوباره تلاش کنید",
   submitFallback:
     "ارسال درخواست انجام نشد، دوباره تلاش کنید یا از تلگرام با ما در ارتباط باشید",
 } as const;

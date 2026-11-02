@@ -2,12 +2,17 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { IconBrandTelegram, IconCheck, IconX } from '@tabler/icons-react';
+import {
+  IconAlertTriangle,
+  IconBrandTelegram,
+  IconCheck,
+  IconX,
+} from '@tabler/icons-react';
 import { Button } from '@/ui/Button';
 import { IconButton } from '@/ui/IconButton';
 
 /**
- * تأیید ثبت درخواست دمو.
+ * نتیجهٔ ارسال درخواست دمو — تأیید یا خطا.
  * در موبایل برگهای است که از لبهٔ پایین بالا میآید و ریلبهریل مینشیند،
  * بنابراین خطوط عمودی صفحه از پشت آن امتداد پیدا میکنند؛ در دسکتاپ کارت مرکزی.
  */
@@ -17,8 +22,15 @@ const EXIT_MS = 180;
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-interface DemoSuccessModalProps {
+export type DemoFeedbackTone = 'success' | 'error';
+
+interface DemoFeedbackModalProps {
   open: boolean;
+  tone: DemoFeedbackTone;
+  title: string;
+  description: string;
+  primaryLabel: string;
+  onPrimary: () => void;
   onClose: () => void;
 }
 
@@ -27,15 +39,28 @@ interface LenisHandle {
   start: () => void;
 }
 
-export default function DemoSuccessModal({ open, onClose }: DemoSuccessModalProps) {
+export default function DemoFeedbackModal({
+  open,
+  tone,
+  title,
+  description,
+  primaryLabel,
+  onPrimary,
+  onClose,
+}: DemoFeedbackModalProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
+  const onPrimaryRef = useRef(onPrimary);
   const [rendered, setRendered] = useState(open);
   const [wasOpen, setWasOpen] = useState(open);
 
   useEffect(() => {
     onCloseRef.current = onClose;
   }, [onClose]);
+
+  useEffect(() => {
+    onPrimaryRef.current = onPrimary;
+  }, [onPrimary]);
 
   /* باز شدن، رندر را همانجا فعال میکند؛ بستن، برگه را تا پایان انیمیشن خروج نگه میدارد */
   if (open !== wasOpen) {
@@ -113,6 +138,8 @@ export default function DemoSuccessModal({ open, onClose }: DemoSuccessModalProp
 
   if (!rendered || typeof document === 'undefined') return null;
 
+  const isSuccess = tone === 'success';
+
   return createPortal(
     <div className="fixed inset-0 z-[120] flex items-end justify-center sm:items-center">
       <div
@@ -124,18 +151,26 @@ export default function DemoSuccessModal({ open, onClose }: DemoSuccessModalProp
 
       <div
         ref={sheetRef}
-        role="dialog"
+        role={isSuccess ? 'dialog' : 'alertdialog'}
         aria-modal="true"
-        aria-labelledby="demo-success-title"
-        aria-describedby="demo-success-desc"
+        aria-labelledby="demo-feedback-title"
+        aria-describedby="demo-feedback-desc"
         data-state={phase}
         tabIndex={-1}
         data-lenis-prevent
         className="demo-sheet relative max-h-[calc(100dvh-16px)] w-[calc(100%-16px)] overflow-y-auto border border-b-0 border-[var(--border-neutral-base)] bg-white px-6 pt-8 pb-[calc(24px+env(safe-area-inset-bottom))] focus:outline-none sm:w-full sm:max-w-[520px] sm:border-b sm:p-10"
       >
         <div className="flex items-start justify-between gap-6">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center bg-[var(--bg-success-solid)] text-white">
-            <IconCheck size={26} stroke={2.6} className="demo-success-check" aria-hidden="true" />
+          <span
+            className={`flex h-12 w-12 shrink-0 items-center justify-center text-white ${
+              isSuccess ? 'bg-[var(--bg-success-solid)]' : 'bg-[var(--bg-error-solid)]'
+            }`}
+          >
+            {isSuccess ? (
+              <IconCheck size={26} stroke={2.6} className="demo-success-check" aria-hidden="true" />
+            ) : (
+              <IconAlertTriangle size={26} stroke={2.4} aria-hidden="true" />
+            )}
           </span>
 
           <IconButton
@@ -152,17 +187,16 @@ export default function DemoSuccessModal({ open, onClose }: DemoSuccessModalProp
         </div>
 
         <h2
-          id="demo-success-title"
+          id="demo-feedback-title"
           className="mt-5 text-2xl leading-[1.25] font-black tracking-[-0.02em] text-[var(--text-neutral-strong)] sm:text-[28px]"
         >
-          درخواست شما ثبت شد
+          {title}
         </h2>
         <p
-          id="demo-success-desc"
+          id="demo-feedback-desc"
           className="mt-3 text-[15px] leading-[1.8] text-[var(--text-neutral-base)] sm:text-base"
         >
-          برای هماهنگی زمان دمو با شما تماس میگیریم. نمونهٔ تعاملی کاتالوگ شما تا ۴۸ ساعت آماده
-          میشود.
+          {description}
         </p>
 
         <div className="mt-7 h-px w-full bg-[var(--border-neutral-subtle)]" aria-hidden="true" />
@@ -172,17 +206,17 @@ export default function DemoSuccessModal({ open, onClose }: DemoSuccessModalProp
             type="button"
             color="primary"
             variant="solid"
-            size="md"
+            size="sm"
             cursorEffect={false}
-            onClick={() => onCloseRef.current()}
+            onClick={() => onPrimaryRef.current()}
           >
-            متوجه شدم
+            {primaryLabel}
           </Button>
 
           <Button
             color="primary"
             variant="outline"
-            size="md"
+            size="sm"
             asChild
             cursorEffect={false}
             iconBefore={<IconBrandTelegram size={20} stroke={2} aria-hidden="true" />}
